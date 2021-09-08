@@ -1,0 +1,695 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <link
+            rel="stylesheet"
+            href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+            integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
+            crossorigin="anonymous"
+        />
+        <link href="css/all.css" rel="stylesheet" />
+        <!--load all styles -->
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+        <link
+            href="https://fonts.googleapis.com/css2?family=Quicksand:wght@300;400;500;600;700&display=swap"
+            rel="stylesheet"
+        />
+        <meta charset="UTF-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Document</title>
+        <style>
+            * {
+                margin: 0;
+                padding: 0;
+                box-sizing: border-box;
+                font-family: "Quicksand", sans-serif;
+            }
+            p {
+                margin-bottom: 0;
+            }
+            body,
+            main {
+                height: 100vh;
+                background-color: #b3dab6;
+            }
+            body {
+                position: relative;
+            }
+            main {
+                display: flex;
+                flex-direction: column;
+            }
+            nav {
+                padding: 1.5rem;
+                padding-bottom: 0;
+                display: flex;
+                flex-direction: row;
+                justify-content: space-between;
+                font-size: 1.2rem;
+            }
+            .logo-part {
+                display: inline-block;
+                font-weight: 700;
+            }
+            section {
+                height: 80%;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+            }
+            /* .img-div {
+                width: 60%;
+            } */
+
+            .img-div img {
+                width: 100%;
+            }
+            .invis {
+                display: none;
+            }
+
+            .modal-input {
+                position: relative;
+                height: 60px;
+                overflow: hidden;
+                width: 100% !important;
+                margin-bottom: 1rem;
+            }
+
+            .modal-input input {
+                background-color: transparent !important;
+                width: 100%;
+                height: 100%;
+                color: black;
+                padding-top: 20px;
+                border: none;
+                outline: none;
+                font-size: 0.8rem;
+            }
+
+            .modal-input label {
+                position: absolute;
+                bottom: 0px;
+                left: 0px;
+                width: 100%;
+                height: 100%;
+                pointer-events: none;
+                border-bottom: 1px solid black;
+                color: black;
+            }
+
+            .modal-input label::after {
+                content: "";
+                position: absolute;
+                height: 100%;
+                width: 100%;
+                border-bottom: 3px solid black;
+                left: 0;
+                bottom: -1px;
+                transform: translateX(-100%);
+                transition: all 0.3s ease;
+            }
+
+            .modal-input input:focus + .label-name .content-name,
+            .modal-input input:valid + .label-name .content-name {
+                transform: translateY(-150%);
+                opacity: 0.5;
+            }
+
+            .modal-input input:focus + .label-name::after,
+            .modal-input input:valid + .label-name::after {
+                transform: translateX(0%);
+            }
+
+            .content-name {
+                position: absolute;
+                bottom: 1px;
+                left: 0px;
+                transition: all 0.3s ease;
+                font-size: 0.8rem;
+            }
+
+            .guess-btn {
+                background-color: darkgreen;
+                color: white;
+            }
+            footer {
+                height: 20%;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                font-size: 1.7rem;
+            }
+
+            footer p {
+                cursor: pointer;
+                transition: all 0.3s ease;
+            }
+
+            footer p:hover {
+                font-size: 2.2rem;
+            }
+
+            .btn-res {
+                color: darkgreen;
+                transition: all 0.3s ease;
+            }
+
+            .btn-res:focus {
+                box-shadow: 0 0 0 0.2rem rgb(0 150 0 / 25%);
+            }
+            .btn-res:hover {
+                background-color: rgb(226, 226, 226);
+            }
+            .modal-title img {
+                width: 12%;
+            }
+            .modal-body {
+                display: flex;
+                justify-content: center;
+                flex-direction: row;
+                flex-wrap: wrap;
+            }
+            .modal-body img {
+                width: 100%;
+            }
+            .part-row {
+                width: 25%;
+                margin-bottom: 2rem;
+            }
+            .wrong-answer-p {
+                color: red;
+            }
+            .right-answer-p {
+                color: darkgreen;
+            }
+            .part-row p {
+                text-align: center;
+                word-break: break-all;
+            }
+            .fa-bars {
+                cursor: pointer;
+                transition: all 0.5s ease;
+            }
+            .nav-menu {
+                position: absolute;
+                text-align: end;
+                right: 1%;
+                top: 8%;
+                transform: scaleY(1);
+                transform-origin: top;
+                transition: transform 0.26s ease;
+            }
+            .menu {
+                cursor: pointer;
+                font-size: 1.7rem;
+                transition: all 0.5s ease;
+            }
+            .menu:hover {
+                font-size: 2.5rem;
+            }
+            .opacity-0 {
+                opacity: 0;
+                transform: scaleY(0);
+            }
+            #cell-part-cnt {
+                transition: all 0.5s ease;
+            }
+            main {
+                transition: all 1s ease;
+            }
+        </style>
+    </head>
+    <body>
+        <main>
+            <nav>
+                <div class="logo">
+                    <i class="fas fa-leaf logo-part"></i>
+                    <p class="logo-part">ŠŪNAS UZBŪVE</p>
+                </div>
+                <i class="fas fa-bars"></i>
+                <div class="nav-menu opacity-0">
+                    <h1 class="menu" id="plant-cell">AUGU ŠŪNA</h1>
+                    <h1 class="menu" id="animal-cell">DZĪVNIEKU ŠŪNA</h1>
+                </div>
+            </nav>
+            <section>
+                <canvas
+                    class="img-div"
+                    width="900"
+                    height="650"
+                    id="canvas"
+                ></canvas>
+                <!-- <div class="img-div">
+                    <img src="plant-cell.svg" alt="" />
+                </div> -->
+            </section>
+            <!-- Button trigger modal -->
+            <!-- Modal -->
+            <footer>
+                <p id="cell-part-cnt">12</p>
+                <button class="btn btn-res invis">Rezultāti</button>
+            </footer>
+        </main>
+        <div
+            class="modal fade"
+            id="exampleModal"
+            tabindex="-1"
+            role="dialog"
+            aria-labelledby="exampleModalLabel"
+            aria-hidden="true"
+        >
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">
+                            <p></p>
+                            <img class="invis" src="" alt="" />
+                        </h5>
+                        <button
+                            type="button"
+                            class="close"
+                            data-dismiss="modal"
+                            aria-label="Close"
+                        >
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="modal-input">
+                            <input
+                                id="guess-inp"
+                                type="text"
+                                name="user"
+                                required
+                            />
+                            <label class="label-name" for="name">
+                                <span class="content-name">Organoīds</span>
+                            </label>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button
+                            type="button"
+                            class="btn guess-btn"
+                            data-dismiss="modal"
+                        >
+                            Minēt
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </body>
+</html>
+
+<script
+    src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
+    integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
+    crossorigin="anonymous"
+></script>
+<script
+    src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
+    integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+    crossorigin="anonymous"
+></script>
+<script
+    src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
+    integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+    crossorigin="anonymous"
+></script>
+<script>
+    const canvas = document.getElementById("canvas");
+    let activeCellPartName = "";
+    let activeCellPartImg = "";
+    let activeCellPartID = "";
+
+    const plantCellParts = [
+        {
+            id: 0,
+            name: "Plazmatiskā membrāna",
+            colors: ["#eeeb67", "#faf065"],
+            img: "membrana.svg",
+            hasAnswered: 0,
+            userAnswer: "",
+        },
+        {
+            id: 1,
+            name: "Goldži komplekss",
+            colors: ["#9d5ea6", "#785175", "#c895c3", "#aa6aaa"],
+            img: "goldzi.svg",
+            hasAnswered: 0,
+            userAnswer: "",
+        },
+        {
+            id: 2,
+            name: "Citoplazma",
+            colors: ["#c2dc7f"],
+            img: "citoplazma.svg",
+            hasAnswered: 0,
+            userAnswer: "",
+        },
+        {
+            id: 3,
+            name: "Kodols",
+            colors: [
+                "#87bfe8",
+                "#73adde",
+                "#5ebeec",
+                "#78d0e9",
+                "#5287b7",
+                "#2b6195",
+            ],
+            img: "kodols.svg",
+            hasAnswered: 0,
+            userAnswer: "",
+        },
+        {
+            id: 4,
+            name: "Gludais endoplazmatiskais tīkls",
+            colors: ["#9c90c5", "#3f3273"],
+            img: "gludais.svg",
+            hasAnswered: 0,
+            userAnswer: "",
+        },
+        {
+            id: 5,
+            name: "Graudainais endoplazmatiskais tīkls",
+            colors: ["#f5855d", "#c9471e", "9e5f3f"],
+            img: "graudainais.svg",
+            hasAnswered: 0,
+            userAnswer: "",
+        },
+        {
+            id: 6,
+            name: "Lizosoma",
+            colors: ["#4c73b8", "#6dc8c1", "#cbdd56", "#518177"],
+            img: "lizosoma.svg",
+            hasAnswered: 0,
+            userAnswer: "",
+        },
+        {
+            id: 7,
+            name: "Mitohondrijs",
+            colors: ["#ffc22d", "#1dbbe3", "#0796c6", "#c94c1d"],
+            img: "mitohondrijs.svg",
+            hasAnswered: 0,
+            userAnswer: "",
+        },
+        {
+            id: 8,
+            name: "Hloroplasts",
+            colors: [
+                "#64a63b",
+                "#18a446",
+                "#49a256",
+                "#416e27",
+                "#73bf44",
+                "#46802e",
+                "#569034",
+                "#62a13b",
+                "#4ab754",
+                "#457429",
+                "#497b2b",
+                "#5a9434",
+                "#4e8330",
+                "#62a539",
+                "#3b7029",
+                "#568e33",
+                "#538a31",
+            ],
+            img: "hloroplasts.svg",
+            hasAnswered: 0,
+            userAnswer: "",
+        },
+        {
+            id: 9,
+            name: "Vakuola",
+            colors: ["#b9dfc7"],
+            img: "vakuola.svg",
+            hasAnswered: 0,
+            userAnswer: "",
+        },
+        {
+            id: 10,
+            name: "Šūnapvalks",
+            colors: ["#1c7e3e"],
+            img: "sunapvalks.svg",
+            hasAnswered: 0,
+            userAnswer: "",
+        },
+        {
+            id: 11,
+            name: "Kodoliņš",
+            colors: ["#3272b9"],
+            img: "kodolins.svg",
+            hasAnswered: 0,
+            userAnswer: "",
+        },
+    ];
+
+    $(".guess-btn").click(function () {
+        let inpVal = $("#guess-inp").val().toLowerCase();
+        $("#exampleModal").modal("hide");
+        $("#guess-inp").val("");
+        plantCellParts[activeCellPartID].hasAnswered = 1;
+        plantCellParts[activeCellPartID].userAnswer = inpVal;
+        let cellPartCnt = parseInt($("#cell-part-cnt").text());
+        cellPartCnt -= 1;
+        $("#cell-part-cnt").text(cellPartCnt);
+        if (cellPartCnt === 0) {
+            $("#cell-part-cnt").addClass("invis");
+            $(".btn-res").removeClass("invis");
+        }
+    });
+
+    $(".fa-bars").click(function () {
+        $(".nav-menu").toggleClass("opacity-0");
+    });
+
+    $("#plant-cell").click(function () {
+        const context = canvas.getContext("2d");
+
+        context.clearRect(0, 0, canvas.width, canvas.height);
+        $("canvas").css("margin-top", "0");
+        drawImageFromWebUrl(
+            "https://res.cloudinary.com/djgaw5brf/image/upload/v1631118701/plant-cell_bxb9ir.svg"
+        );
+        $("#cell-part-cnt").text("12");
+        $("main").css("background-color", "#b3dab6");
+        $("body").css("background-color", "#b3dab6");
+        plantCellParts.forEach((plantCell) => {
+            plantCell.hasAnswered = 0;
+            plantCell.userAnswer = "";
+        });
+    });
+
+    $("#animal-cell").click(function () {
+        const context = canvas.getContext("2d");
+
+        context.clearRect(0, 0, canvas.width, canvas.height);
+        canvas.width = 0.55 * window.innerWidth;
+        canvas.height = 0.7 * canvas.width;
+        $("canvas").css("margin-top", "5rem");
+        drawImageFromWebUrl(
+            "https://res.cloudinary.com/djgaw5brf/image/upload/v1631135845/dzivnieku-suna_ujjr1n.svg"
+        );
+        $("#cell-part-cnt").text("Progresā");
+        $("main").css("background-color", "#ffb491");
+        $("body").css("background-color", "#ffb491");
+        $(".btn-res").addClass("invis");
+        $("#cell-part-cnt").removeClass("invis");
+    });
+    $(".btn-res").click(function () {
+        let score = 0;
+        $("#exampleModal .modal-title img").addClass("invis");
+        $("#exampleModal .modal-body .modal-input").addClass("invis");
+        $("#exampleModal .modal-footer").addClass("invis");
+        $("#exampleModal .modal-body .part-row").remove();
+        $("#exampleModal").modal("show");
+        plantCellParts.forEach((plantCell) => {
+            let answerClass = "";
+            if (
+                plantCell.name.toLocaleLowerCase() !==
+                plantCell.userAnswer.toLocaleLowerCase()
+            ) {
+                answerClass = "wrong-answer-p";
+            } else {
+                answerClass = "right-answer-p";
+                score += 1;
+            }
+            $("#exampleModal .modal-body").append(`
+                    <div class="part-row" style="width:50%; margin-bottom:7rem;">
+                        <img src='${plantCell.img}'>
+                        <p>${plantCell.name}</p>
+                        <p class="${answerClass}">${plantCell.userAnswer}</p>
+                    </div>
+                    `);
+        });
+        $("#exampleModal .modal-title p").text(
+            `Rezultāti (${(score / 12) * 100} %)`
+        );
+    });
+
+    $("#cell-part-cnt").click(function () {
+        $("#exampleModal .modal-title p").text("Atlikušie organoīdi");
+        $("#exampleModal .modal-title img").addClass("invis");
+        $("#exampleModal .modal-body .modal-input").addClass("invis");
+        $("#exampleModal .modal-body .part-row").remove();
+        plantCellParts.forEach((plantCell) => {
+            if (plantCell.userAnswer === "") {
+                $("#exampleModal .modal-body").append(`
+                    <div class="part-row">
+                        <img src='${plantCell.img}'>
+                    </div>
+                    `);
+            }
+        });
+        $("#exampleModal .modal-footer").addClass("invis");
+        $("#exampleModal").modal("show");
+    });
+
+    const resizeCanvas = () => {
+        var orientation = screen.orientation;
+        $(".nav-menu").css("top", "8%");
+        console.log(orientation);
+        if (window.innerWidth > 1000) {
+            canvas.width = 0.55 * window.innerWidth;
+            canvas.height = 0.76 * canvas.width;
+        } else {
+            canvas.width = 0.6 * window.innerWidth;
+            canvas.height = 0.65 * canvas.width;
+        }
+        if (orientation.angle === 90) {
+            $(".nav-menu").css("top", "13%");
+        }
+
+        drawImageFromWebUrl(
+            "https://res.cloudinary.com/djgaw5brf/image/upload/v1631118701/plant-cell_bxb9ir.svg"
+        );
+    };
+
+    window.onload = resizeCanvas;
+    window.onresize = resizeCanvas;
+
+    canvas.addEventListener(
+        "click",
+        function (event) {
+            // Get the coordinates of the click
+            var eventLocation = getEventLocation(this, event);
+            // Get the data of the pixel according to the location generate by the getEventLocation function
+            var context = this.getContext("2d");
+            var pixelData = context.getImageData(
+                eventLocation.x,
+                eventLocation.y,
+                1,
+                1
+            ).data;
+
+            // If transparency on the pixel , array = [0,0,0,0]
+            if (
+                pixelData[0] == 0 &&
+                pixelData[1] == 0 &&
+                pixelData[2] == 0 &&
+                pixelData[3] == 0
+            ) {
+                // Do something if the pixel is transparent
+            }
+
+            // Convert it to HEX if you want using the rgbToHex method.
+            let hex =
+                "#" +
+                (
+                    "000000" +
+                    rgbToHex(pixelData[0], pixelData[1], pixelData[2])
+                ).slice(-6);
+            // console.log(hex);
+            checkCellPart(hex);
+        },
+        false
+    );
+
+    checkCellPart = (hexCode) => {
+        let activeCellPart = plantCellParts.filter((cellPart) =>
+            cellPart.colors.includes(hexCode)
+        );
+        if (activeCellPart && activeCellPart[0].hasAnswered != 1) {
+            activeCellPartName = activeCellPart[0].name;
+            activeCellPartID = activeCellPart[0].id;
+            $("#exampleModal .modal-title p").text("");
+            $("#exampleModal .modal-title img").attr(
+                "src",
+                activeCellPart[0].img
+            );
+            $("#exampleModal .modal-title img").removeClass("invis");
+            $("#exampleModal .modal-body .modal-input").removeClass("invis");
+            $("#exampleModal .modal-body .part-row").remove();
+            $("#exampleModal .modal-footer").removeClass("invis");
+            $("#exampleModal").modal("show");
+            // console.log(activeCellPartName);
+        } else {
+            $("#fadeMoadl").modal("show");
+        }
+    };
+
+    function rgbToHex(r, g, b) {
+        if (r > 255 || g > 255 || b > 255) throw "Invalid color component";
+        return ((r << 16) | (g << 8) | b).toString(16);
+    }
+
+    const getElementPosition = (obj) => {
+        var curleft = 0,
+            curtop = 0;
+        if (obj.offsetParent) {
+            do {
+                curleft += obj.offsetLeft;
+                curtop += obj.offsetTop;
+            } while ((obj = obj.offsetParent));
+            return { x: curleft, y: curtop };
+        }
+        return undefined;
+    };
+
+    let coords = getElementPosition(canvas);
+    console.log(coords);
+
+    function getEventLocation(element, event) {
+        // Relies on the getElementPosition function.
+        var pos = getElementPosition(element);
+
+        return {
+            x: event.pageX - pos.x,
+            y: event.pageY - pos.y,
+        };
+    }
+
+    function drawImageFromWebUrl(sourceurl) {
+        var img = new Image();
+        img.crossOrigin = "Anonymous";
+
+        img.addEventListener("load", function () {
+            // The image can be drawn from any source, the canvas will be filled with the image.
+            canvas
+                .getContext("2d")
+                .drawImage(
+                    img,
+                    0,
+                    0,
+                    img.width,
+                    img.height,
+                    0,
+                    0,
+                    canvas.width,
+                    canvas.height
+                );
+        });
+
+        img.setAttribute("src", sourceurl);
+    }
+
+    drawImageFromWebUrl(
+        "https://res.cloudinary.com/djgaw5brf/image/upload/v1631118701/plant-cell_bxb9ir.svg"
+    );
+</script>
